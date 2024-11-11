@@ -1,0 +1,167 @@
+:root {
+    --gray: rgb(126, 126, 126);
+}
+
+.main-wrapper {
+    width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 0;
+    .main-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 60px;
+    }
+    .sign-wrap {
+        margin-top: 80px;
+        button {
+            border: solid 2px black;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            font-size: 25px;
+            background: none;
+            &:hover {
+                background: black;
+                color: white;
+                transition: 0.5s;
+            }
+        }
+        .new-container {
+            margin-top: 40px;
+            p {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            button {
+                margin-bottom: 20px;
+                background: black;
+                color: white;
+                &:hover {
+                    background: white;
+                    color: black;
+                    transition: 0.5s;
+                }
+            }
+        }
+    }
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .ctgr-wrap {
+        width: 95vw;
+        display: flex;
+        height: 80px;
+        @media only screen and (max-width: 680px) {
+            width: 80vw !important;
+        }
+        align-items: center;
+        justify-content: space-evenly;
+        > p {
+            position: relative;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+            &.active {
+                color: black;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: -5px;
+                    height: 2px;
+                    background: black;
+                    transform: scaleX(1);
+                    transition: transform 0.3s ease;
+                }
+            }
+
+            &:not(.active)::after {
+                transform: scaleX(0);
+            }
+        }
+    }
+    .list-wrap {
+        margin-top: 20px;
+        padding-bottom: 50px;
+        .list-container {
+            position: relative;
+            padding: 10px 20px;
+            width: 95vw;
+            @media only screen and (max-width: 680px) {
+                width: 80vw !important;
+            }
+            background: white;
+            margin-bottom: 90px;
+            border-radius: 10px 10px 0 0;
+            .title {
+                padding: 10px 0;
+                font-weight: 900;
+                font-size: 25px;
+            }
+            .info {
+                padding-bottom: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                color: var(--gray);
+                font-size: 15px;
+                border-bottom: solid 1px rgb(184, 184, 184);
+                font-style: italic;
+                .likes_cmt {
+                    display: flex;
+                    > div {
+                        margin-left: 10px;
+                        > svg {
+                            margin-right: 3px;
+                        }
+                    }
+                }
+            }
+            .content {
+                font-size: 13px;
+                padding-top: 30px;
+                padding-bottom: 10px;
+                height: 45px;
+                word-break: break-word;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 14px;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                align-items: center;
+                justify-content: center;
+            }
+            .read {
+                position: absolute;
+                top: 95%;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                margin-top: 0;
+                width: 100%;
+                height: 50px;
+                margin-top: 10px;
+                background: rgb(71, 71, 71);
+                color: white;
+                border-radius: 0 0 10px 10px;
+                transition: 0.3s;
+                &:hover {
+                    background: black;
+                }
+            }
+        }
+    }
+}

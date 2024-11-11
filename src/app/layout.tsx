@@ -2,16 +2,19 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import './_styles/_css/common.scss';
+import './_styles/_css/reset.scss';
+import './_styles/_css/component.scss';
 import SmoothScroll from './SmoothScroll';
+import { useEffect } from 'react';
 
 const geistSans = localFont({
-    src: './fonts/GeistVF.woff',
+    src: './_fonts/GeistVF.woff',
     variable: '--font-geist-sans',
     weight: '100 900',
 });
 
 const geistMono = localFont({
-    src: './fonts/GeistMonoVF.woff',
+    src: './_fonts/GeistMonoVF.woff',
     variable: '--font-geist-mono',
     weight: '100 900',
 });
