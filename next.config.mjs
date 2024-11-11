@@ -2,10 +2,10 @@
 const nextConfig = {
     reactStrictMode: false,
     images: {
-        domains: ['blogjiyu.s3.ap-northeast-2.amazonaws.com'], // 허용된 도메인 추가
+        domains: ['blogjiyu.s3.ap-northeast-2.amazonaws.com', 'cdn1.iconfinder.com'], // 허용된 도메인 추가
     },
     async rewrites() {
-        // * url경로 재설정
+        // * url 경로 재설정
         return [
             {
                 source: '/api/:path*',
