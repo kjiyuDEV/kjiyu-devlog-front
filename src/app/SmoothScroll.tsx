@@ -21,7 +21,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
                     class: 'is-reveal',
                     mobile: {
                         smooth: true,
-                    },
+                    } as any,
                     tablet: {
                         smooth: true,
                         breakpoint: 0,
@@ -70,6 +70,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             {pathname !== '/' && <Header />}
             <div data-scroll-container ref={scrollRef}>
                 {children}
+                <div className="footer" />
             </div>
         </>
     );
