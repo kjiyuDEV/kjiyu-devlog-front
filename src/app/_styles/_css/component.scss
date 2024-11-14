@@ -57,7 +57,7 @@
     align-items: center;
     flex-direction: column;
     .ctgr-wrap {
-        width: 95vw;
+        width: 90vw;
         display: flex;
         height: 80px;
         @media only screen and (max-width: 680px) {
@@ -96,7 +96,7 @@
         .list-container {
             position: relative;
             padding: 10px 20px;
-            width: 95vw;
+            width: 90vw;
             @media only screen and (max-width: 680px) {
                 width: 80vw !important;
             }
@@ -163,5 +163,89 @@
                 }
             }
         }
+    }
+}
+
+.detail-wrapper {
+    width: 90vw;
+    @media only screen and (max-width: 680px) {
+        width: 80vw !important;
+    }
+    margin: 50px auto;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 20px;
+    margin-bottom: 100px;
+    .category {
+        color: var(--gray);
+        font-style: italic;
+        font-size: 13px;
+    }
+    .title {
+        margin: 10px 0;
+    }
+    .info-wrap {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 10px;
+        width: 100%;
+        > p {
+            width: 150px;
+            font-size: 15px;
+            color: var(--gray);
+        }
+        .date {
+            text-align: right;
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: #888;
+            font-weight: bold;
+        }
+    }
+    figure {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: cover;
+    }
+    code {
+        width: 100%;
+    }
+    pre {
+        overflow: scroll;
+        width: auto;
+        background-color: #282c34; /* 어두운 배경색 */
+        color: #ffffff; /* 흰색 글자색 */
+        padding: 10px; /* 내부 여백 */
+        border-radius: 5px; /* 모서리 둥글게 */
+        font-family: 'Courier New', Courier, monospace; /* 고정폭 글꼴 */
+        overflow-x: auto; /* 가로 스크롤 가능 */
+        white-space: pre; /* 공백 유지 */
+        line-height: 1.5; /* 줄 간격 */
+        border: 1px solid #444; /* 테두리 추가 */
+    }
+    .content {
+        margin-top: 20px;
+        width: 80%;
+        @media only screen and (max-width: 680px) {
+            width: 100% !important;
+        }
+    }
+    p,
+    ul,
+    li {
+        text-align: center;
     }
 }

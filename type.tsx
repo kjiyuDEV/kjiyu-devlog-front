@@ -13,3 +13,12 @@ export interface Category {
     _id: string;
     categoryName: string;
 }
+
+export interface PostDetail {
+    _id: string;
+    title: string;
+    contents: string;
+    date: string;
+    category: Category;
+    views: number;
+}
