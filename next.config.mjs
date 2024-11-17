@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // output: 'export',
-    // basePath: '/kjiyu-devlog-front',
+    output: 'export',
+    basePath: '/kjiyu-devlog-front',
     reactStrictMode: false,
     images: {
         domains: ['blogjiyu.s3.ap-northeast-2.amazonaws.com', 'cdn1.iconfinder.com'], // 허용된 도메인 추가

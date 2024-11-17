@@ -8,7 +8,7 @@
         "build": "next build ",
         "start": "next start",
         "predeploy": "npm run build",
-        "deploy": "if exist out\\.nojekyll (echo File exists) else (echo. > out\\.nojekyll) && gh-pages -d out --dotfiles"
+        "deploy": "next build && touch out/.nojekyll && git add -f out/ && git commit -m \"Deploy\" && git subtree push --prefix out origin gh-pages"
     },
     "dependencies": {
         "@emotion/react": "^11.11.4",
@@ -23,6 +23,7 @@
         "locomotive-scroll": "^4.1.4",
         "next": "14.2.3",
         "react": "^18",
+        "react-device-detect": "^2.2.3",
         "react-dom": "^18",
         "react-modal": "^3.16.1",
         "react-redux": "^9.1.2",
