@@ -6,6 +6,7 @@ import './_styles/_css/reset.scss';
 import './_styles/_css/component.scss';
 import SmoothScroll from './SmoothScroll';
 import { useEffect } from 'react';
+import Root from './_components/root';
 
 const geistSans = localFont({
     src: './_fonts/GeistVF.woff',
@@ -32,7 +33,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <SmoothScroll>{children}</SmoothScroll>
+                <Root>{children}</Root>
             </body>
         </html>
     );

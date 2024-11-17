@@ -27,6 +27,14 @@ export default function Home() {
                     >
                         Register
                     </button>
+                    <p
+                        className="just-view"
+                        onClick={() => {
+                            router.push('/list');
+                        }}
+                    >
+                        Just View
+                    </p>
                 </div>
             </div>
         </div>

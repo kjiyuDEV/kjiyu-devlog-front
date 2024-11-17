@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import Header from './_components/header/Header';
+import Header from '../header/Header';
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -63,6 +63,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             window.removeEventListener('beforeunload', saveScrollPosition); // 이벤트 리스너 제거
         };
     }, [pathname]);
+
+    console.log(pathname, '<pathname');
 
     return (
         <>
