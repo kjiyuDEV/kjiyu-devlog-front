@@ -4,6 +4,7 @@ import React, { useEffect, useState, ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import Mobile from './Mobile';
 import Desktop from './Desktop';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface RootProps {
     children: ReactNode;
