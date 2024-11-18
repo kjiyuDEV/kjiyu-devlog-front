@@ -43,3 +43,25 @@ export const getPostDetail = async (id: string) => {
     throw new Error(`Error fetching post detail: ${errorMessage}`);
   }
 };
+
+// 게시글 좋아요 등록
+export const postLike = async (id: string) => {
+  try {
+    const response = await axios.post(
+      `${
+        process.env.NODE_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_API_URL_PROD
+          : process.env.NEXT_PUBLIC_API_URL_DEV
+      }/api/post/${id}/like`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    throw new Error(`Error posting like: ${errorMessage}`);
+  }
+};
