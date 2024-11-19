@@ -31,9 +31,11 @@ export interface Modal {
   data: {
     type: string;
     title: string;
+    content: string;
     description: string;
     txtCancel: string;
     txtConfirm: string;
+    fncConfirm: any;
   };
 }
 export interface ModalState {

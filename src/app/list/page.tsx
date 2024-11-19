@@ -9,9 +9,10 @@ import {
   faHeart,
   faHouse,
 } from '@fortawesome/free-solid-svg-icons';
-import { Category, Post } from '../../../type';
+import { Category, Post, RootState } from '../../../type';
 import API from '../_apis';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
 const Page: React.FC = () => {
   const router = useRouter();
@@ -19,8 +20,15 @@ const Page: React.FC = () => {
   const [ctgr, setCtgr] = useState<Category[]>([]);
   const [crntCtgr, setCrntCtgr] = useState('all');
 
+  const { modal } = useSelector((state: RootState) => {
+    return {
+      modal: state.modals.modal,
+      auth: state.auth,
+    };
+  });
+
   const handleCrntCtgr = async (id: string) => {
-    setCrntCtgr(id); // 현재 카테고리 설정
+    setCrntCtgr(id);
 
     try {
       const res = await API.post.getPosts(id);
@@ -32,12 +40,12 @@ const Page: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const res = await API.post.getPosts('all'); // API를 통해 포스트 목록 가져오기
-      setPosts(res.postsList); // 포스트 목록 설정
+      const res = await API.post.getPosts('all');
+      setPosts(res.postsList);
       setCtgr([
         { categoryName: '전체', _id: 'all' },
         ...res.categoryFindResult,
-      ]); // 카테고리 설정
+      ]);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

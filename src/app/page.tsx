@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import LoginModal from './_components/modals/LoginModal';
+import { TYPE } from './_components/types';
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { modal } = useSelector((state: RootState) => {
+  const { modal, auth } = useSelector((state: RootState) => {
     return {
       modal: state.modals.modal,
       auth: state.auth,
@@ -17,13 +18,24 @@ export default function Home() {
   });
 
   const handleLoginModal = () => {
-    dispatch({
-      type: 'OPEN_MODAL',
-      data: {
-        type: 'login',
-        title: 'Login',
-      },
-    });
+    if (auth.isAuthenticated) {
+      dispatch({
+        type: TYPE.OPEN_CONFIRM_MODAL,
+        data: {
+          type: 'logout',
+          content: '로그아웃 하시겠어요?',
+        },
+      });
+    }
+    if (!auth.isAuthenticated) {
+      dispatch({
+        type: 'OPEN_MODAL',
+        data: {
+          type: 'login',
+          title: 'Login',
+        },
+      });
+    }
   };
 
   return (
@@ -47,7 +59,7 @@ export default function Home() {
             handleLoginModal();
           }}
         >
-          Login
+          {auth.isAuthenticated ? 'Logout' : 'Login'}
         </button>
         <div className="new-container">
           <p>New here?</p>
