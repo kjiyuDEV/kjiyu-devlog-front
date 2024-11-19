@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Header from '../header/Header';
+import { ToastContainer } from 'react-toastify';
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -68,6 +70,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     return (
         <>
+            <ToastContainer position="top-center" hideProgressBar={true} autoClose={3000} />
             {pathname !== '/' && <Header />}
             <div data-scroll-container ref={scrollRef}>
                 {children}
