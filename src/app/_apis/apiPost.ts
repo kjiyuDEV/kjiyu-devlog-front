@@ -45,17 +45,21 @@ export const getPostDetail = async (id: string) => {
 };
 
 // 게시글 좋아요 등록
-export const postLike = async (id: string) => {
+export const postLike = async (id: string, req: any) => {
   try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     const response = await axios.post(
       `${
         process.env.NODE_ENV === 'production'
           ? process.env.NEXT_PUBLIC_API_URL_PROD
           : process.env.NEXT_PUBLIC_API_URL_DEV
       }/api/post/${id}/like`,
-      {
-        withCredentials: true,
-      }
+      req,
+      config
     );
     return response.data;
   } catch (error: any) {

@@ -1,27 +1,47 @@
 'use client'; // Client Component로 설정
 
-import { useEffect, useState, Suspense } from 'react';
-import { PostDetail } from '../../../type';
+import { useEffect, useState, Suspense, useMemo } from 'react';
+import { PostDetail, RootState } from '../../../type';
 import API from '../_apis';
 import { useSearchParams } from 'next/navigation';
 import Footer from '../_components/footer/Index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const PostPageContent = () => {
-  const [post, setPost] = useState<PostDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<PostDetail | null>(null);
+  const likes = useMemo(() => {
+    return post ? post.likes.length : 0;
+  }, [post]);
+  const comments = useMemo(() => {
+    return post ? post.comments.length : 0;
+  }, [post]);
+
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
 
+  const { auth } = useSelector((state: RootState) => ({
+    auth: state.auth,
+  }));
+
   const handleLike = async (id: string) => {
-    try {
-      const response = await API.post.postLike(id);
-      setPost(response);
-    } catch (error) {
-      console.error('Error fetching post:', error);
-    } finally {
-      setLoading(false);
+    if (auth.isAuthenticated) {
+      try {
+        const response = await API.post.postLike(id, {
+          userId: auth.user.id,
+          token: auth.token,
+        });
+        setPost(response);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      toast('로그인 후 이용해주세요.');
     }
   };
 
@@ -78,13 +98,13 @@ const PostPageContent = () => {
             <div className="likes">
               <FontAwesomeIcon
                 icon={faHeart}
-                // onClick={() => handleLike(post._id)}
+                onClick={() => handleLike(post._id)}
               />
-              {post.likes.length}
+              {likes}
             </div>
             <div className="cmt">
               <FontAwesomeIcon icon={faComment} onClick={handleCmtModal} />
-              {post.comments.length}
+              {comments}
             </div>
           </p>
         </div>

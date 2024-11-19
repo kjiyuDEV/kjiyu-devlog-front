@@ -5,24 +5,35 @@ import { isMobile } from 'react-device-detect';
 import Mobile from './Mobile';
 import Desktop from './Desktop';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../type';
+import Modal from '../modals';
+import ConfirmModal from '../modals/ConfirmModal';
 
 interface RootProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const Root: React.FC<RootProps> = ({ children }) => {
-    const [isClient, setIsClient] = useState('');
+  const { confirmModal, auth } = useSelector((state: RootState) => {
+    return {
+      confirmModal: state.modals.confirmModal,
+      auth: state.auth,
+    };
+  });
+  const [isClient, setIsClient] = useState('');
 
-    useEffect(() => {
-        setIsClient(isMobile ? 'mobile' : 'desktop');
-    }, []);
+  useEffect(() => {
+    setIsClient(isMobile ? 'mobile' : 'desktop');
+  }, []);
 
-    return (
-        <div>
-            {isClient === 'mobile' && <Mobile>{children}</Mobile>}
-            {isClient === 'desktop' && <Desktop>{children}</Desktop>}
-        </div>
-    );
+  return (
+    <div>
+      {confirmModal.open && <ConfirmModal />}
+      {isClient === 'mobile' && <Mobile>{children}</Mobile>}
+      {isClient === 'desktop' && <Desktop>{children}</Desktop>}
+    </div>
+  );
 };
 
 export default Root;

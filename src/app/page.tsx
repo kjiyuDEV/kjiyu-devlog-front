@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import LoginModal from './_components/modals/LoginModal';
+import { TYPE } from './_components/types';
+import SignUpModal from './_components/modals/SignUpModal';
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { modal } = useSelector((state: RootState) => {
+  const { modal, auth } = useSelector((state: RootState) => {
     return {
       modal: state.modals.modal,
       auth: state.auth,
@@ -17,13 +19,36 @@ export default function Home() {
   });
 
   const handleLoginModal = () => {
-    dispatch({
-      type: 'OPEN_MODAL',
-      data: {
-        type: 'login',
-        title: 'Login',
-      },
-    });
+    if (auth.isAuthenticated) {
+      dispatch({
+        type: TYPE.OPEN_CONFIRM_MODAL,
+        data: {
+          type: 'logout',
+          content: '로그아웃 하시겠어요?',
+        },
+      });
+    }
+    if (!auth.isAuthenticated) {
+      dispatch({
+        type: TYPE.OPEN_MODAL,
+        data: {
+          type: 'login',
+          title: 'Login',
+        },
+      });
+    }
+  };
+
+  const handleSignUpModal = () => {
+    if (!auth.isAuthenticated) {
+      dispatch({
+        type: TYPE.OPEN_MODAL,
+        data: {
+          type: 'signUp',
+          title: '회원가입',
+        },
+      });
+    }
   };
 
   return (
@@ -47,28 +72,34 @@ export default function Home() {
             handleLoginModal();
           }}
         >
-          Login
+          {auth.isAuthenticated ? 'Logout' : 'Login'}
         </button>
         <div className="new-container">
-          <p>New here?</p>
-          <button
-            onClick={() => {
-              router.push('/list');
-            }}
-          >
-            Register
-          </button>
+          {!auth.isAuthenticated && (
+            <>
+              <p>New here?</p>
+              <button
+                onClick={() => {
+                  handleSignUpModal();
+                }}
+              >
+                Register
+              </button>
+            </>
+          )}
+
           <p
             className="just-view"
             onClick={() => {
               router.push('/list');
             }}
           >
-            Just View
+            {!auth.isAuthenticated ? 'Just View' : 'Go List'}
           </p>
         </div>
       </div>
       {modal.data.type === 'login' && <LoginModal />}
+      {modal.data.type === 'signUp' && <SignUpModal />}
     </div>
   );
 }
