@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 프로젝트 이름
 
-## Getting Started
+## 프로젝트 설명
 
-First, run the development server:
+- https://kjiyulog.com/ (UI Reactjs로 개발)를 마이그레이션 하여 Next.js 및 TS로 작업하였습니다.
+- 이 프로젝트는 **Next.js**, **TypeScript**, **React**를 사용하여 개발된 웹 애플리케이션입니다. 현재 회원가입, 로그인, 댓글 작성, 좋아요 기능이 구현되어 있으며, 현재 상태로는 로그인, 게시글 조회, 좋아요 기능만이 완전히 동작하고 있습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 기술 스택
+- **프론트엔드**: 
+  - Next.js
+  - TypeScript
+  - React
+  - Redux (리듀서 사용)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **백엔드**: 
+  - Node.js
 
-## Learn More
+## 배포
+- 이 프로젝트는 **AWS EC2**를 사용하여 배포되었습니다. 도메인은 AWS에서 생성된 서버를 통해 구성되어 있습니다.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**브라우저에서 확인**
+   - https://kjiyudev.github.io/kjiyu-devlog-front/ 에서 애플리케이션을 확인할 수 있습니다.
