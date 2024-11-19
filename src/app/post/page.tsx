@@ -24,7 +24,7 @@ const PostPageContent = () => {
     const comments = post ? post.comments.length : 0;
     const myLike = useMemo(() => {
         if (!post) return 0;
-        return post.likes.includes(auth.user.id) ? true : false;
+        return post.likes.includes(auth?.user?.id) ? true : false;
     }, [post]);
 
     const searchParams = useSearchParams();
