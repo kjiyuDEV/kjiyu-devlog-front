@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
           <h2 className="modal-title">{modal.data.title}</h2>
         )}
         <button className="modal-close" onClick={handleClose}>
-          <FontAwesomeIcon icon={faTimes} /> {/* X 아이콘 추가 */}
+          <FontAwesomeIcon icon={faTimes} />
         </button>
         <div className="modal-body">{children}</div>
       </div>

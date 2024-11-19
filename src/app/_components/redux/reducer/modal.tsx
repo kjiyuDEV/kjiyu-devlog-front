@@ -11,10 +11,11 @@ const initialState = {
     open: false,
     data: {
       type: '',
-      title: '',
+      content: '',
       description: '',
       txtCancel: '아니오',
       txtConfirm: '예',
+      fncConfirm: null,
     },
   },
   slideUp: {

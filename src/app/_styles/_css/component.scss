@@ -1,5 +1,7 @@
 :root {
     --gray: rgb(126, 126, 126);
+    --border-gray: rgb(175, 175, 175);
+    --pink: rgb(255, 106, 144);
 }
 
 .main-wrapper {
@@ -50,6 +52,7 @@
             }
         }
         .just-view {
+            cursor: pointer;
             text-decoration: underline;
         }
     }
@@ -222,7 +225,7 @@
 
         .separator {
             margin: 0 10px;
-            color: #888;
+            color: var(--border-gray);
             font-weight: bold;
         }
     }
@@ -265,5 +268,61 @@
     ul,
     li {
         text-align: center;
+    }
+    .like-cmt-wrap {
+        border-top: solid 1px var(--border-gray);
+        width: 90%;
+        // padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        > button {
+            border-radius: 30px;
+            color: var(--border-gray);
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: solid 1px var(--border-gray);
+            height: 50px;
+            margin-top: 50px;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            svg {
+                margin: 0 5px;
+            }
+        }
+        .mylike {
+            color: var(--pink);
+            border: solid 1px var(--pink);
+        }
+        .cmtOpen {
+            color: var(--gray);
+            border: solid 1px var(--gray);
+        }
+    }
+    .cmt-wrap {
+        width: 80%;
+        color: var(--gray);
+        .cmt-header {
+            margin-bottom: 10px;
+        }
+        .cmt-container {
+            padding: 10px 0;
+            width: 80%;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: solid 1px var(--border-gray);
+            > p {
+                text-align: left;
+            }
+            .contents {
+                color: black;
+            }
+            .creator {
+                font-size: 13px;
+            }
+        }
     }
 }
