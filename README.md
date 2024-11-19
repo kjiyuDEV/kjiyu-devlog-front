@@ -13,6 +13,7 @@
   - TypeScript
   - React
   - Redux (리듀서 사용)
+  - SCSS
 
 - **백엔드**: 
   - Node.js
