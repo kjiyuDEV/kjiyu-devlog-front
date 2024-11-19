@@ -2,14 +2,22 @@
 import React, { useState } from 'react';
 import Modal from './index';
 import API from '@/app/_apis';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TYPE } from '../types';
+import { RootState } from '../../../../type';
 
 const LoginModal = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { modal, confirmModal, auth } = useSelector((state: RootState) => {
+    return {
+      modal: state.modals.modal,
+      auth: state.auth,
+      confirmModal: state.modals.confirmModal,
+    };
+  });
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [errmsg, setErrmsg] = useState('');
@@ -22,21 +30,20 @@ const LoginModal = () => {
     setPwd(e.target.value);
   };
 
-  const handleLogin = async () => {
-    await API.auth
+  const handleLogin = () => {
+    API.auth
       .postLogin({ userId: id, password: pwd })
-      .then((res) => {
+      .then(async (res) => {
         setErrmsg('');
         dispatch({
           type: TYPE.CLOSE_MODAL,
         });
-        router.push('/list');
+        await router.push('/list');
         dispatch({
           type: TYPE.LOGIN_SUCCESS,
           payload: res,
         });
         toast(`${res.user.name}님, 안녕하세요!`);
-        return res;
       })
       .catch((err) => {
         if (err.code === '01') setPwd('');

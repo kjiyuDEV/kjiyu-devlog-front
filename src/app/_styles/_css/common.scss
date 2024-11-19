@@ -181,7 +181,11 @@ button {
         width: 80%;
         margin: 5px 0;
       }
+      &.signup {
+        margin-bottom: 20px;
+      }
     }
+
     .login-button {
       background: black;
       color: white;
@@ -221,5 +225,23 @@ button {
   z-index: 1000; /* 다른 요소 위에 표시 */
   .modal-content {
     max-width: 300px;
+    min-height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    > .btn-wrap {
+      margin-top: 20px;
+      button {
+        border: solid 1px var(--gray);
+        height: 50px;
+        width: 100px;
+        margin: 10px;
+        &.btn-confirm {
+          background: black;
+          color: white;
+        }
+      }
+    }
   }
 }

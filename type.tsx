@@ -38,6 +38,13 @@ export interface Modal {
     fncConfirm: any;
   };
 }
+export interface User {
+  id: string;
+  name: string;
+  nickname: string;
+  role: string;
+  userId: string;
+}
 export interface ModalState {
   modal: Modal;
   confirmModal: Modal;
@@ -47,6 +54,7 @@ export interface AuthState {
   token: string | null;
   isAuthenticated: boolean | null;
   role: string;
+  user: User;
 }
 
 export interface RootState {

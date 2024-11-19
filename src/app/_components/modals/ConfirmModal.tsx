@@ -22,20 +22,26 @@ const ConfirmModal = () => {
   };
 
   const handleConfirm = () => {
-    toast('로그아웃 했습니다');
+    dispatch({
+      type: TYPE.LOGOUT_SUCCESS,
+    });
+    handleClose();
+    toast('로그아웃 되었습니다');
   };
   return (
     <div className="confirm-modal-overlay">
       <div className="modal-content">
         {confirmModal.data.content && (
-          <h2 className="modal-contents">{modal.data.content}</h2>
+          <h4 className="modal-contents">{confirmModal.data.content}</h4>
         )}
-        <button className="modal-confirm" onClick={handleConfirm}>
-          네gg
-        </button>
-        <button className="modal-cancel" onClick={handleClose}>
-          아니오
-        </button>
+        <div className="btn-wrap">
+          <button className="btn-cancel" onClick={handleClose}>
+            아니오
+          </button>
+          <button className="btn-confirm" onClick={handleConfirm}>
+            네
+          </button>
+        </div>
       </div>
     </div>
   );
