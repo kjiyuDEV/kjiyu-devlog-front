@@ -7,19 +7,23 @@ import { useSearchParams } from 'next/navigation';
 import Footer from '../_components/footer/Index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { isDesktop } from 'react-device-detect';
+import { TYPE } from '../_components/types';
 
 const PostPageContent = () => {
-  const { auth } = useSelector((state: RootState) => ({
+  const dispatch = useDispatch();
+  const { auth, modal } = useSelector((state: RootState) => ({
     auth: state.auth,
+    modal: state.modals.modal,
   }));
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<PostDetail | null>(null);
   const [cmtLists, setCmtLists] = useState<Comment[]>([]);
   const [cmtOpen, setCmtOpen] = useState(false);
   const [commentsFetched, setCommentsFetched] = useState(false);
+  const [cmtContents, setCmtContents] = useState('');
   const likes = post ? post.likes.length : 0;
   const comments = post ? post.comments.length : 0;
   const myLike = useMemo(() => {
@@ -68,17 +72,44 @@ const PostPageContent = () => {
   };
 
   const handleCmtFetch = useCallback(async () => {
-    if (commentsFetched) return;
     try {
       const response = post && (await API.post.getPostComments(post._id));
-      setCommentsFetched(true);
+      setCommentsFetched(!commentsFetched);
       if (response) {
-        setCmtLists(response); // 댓글 목록 업데이트
+        setCmtLists(response);
       }
     } catch (error) {
       console.error('Error fetching post:', error);
     }
   }, [post, auth, commentsFetched]);
+
+  const handleAttemptLogin = () => {
+    toast('로그인 후 이용 가능해요');
+    setTimeout(() => {
+      if (!auth.isAuthenticated) {
+        dispatch({
+          type: TYPE.OPEN_MODAL,
+          data: {
+            type: 'login',
+            title: 'Login',
+          },
+        });
+      }
+    }, 500);
+  };
+
+  const handleCmtPost = async (id: string) => {
+    const params = {
+      contents: cmtContents,
+      userId: auth.user.id,
+      userName: auth.user.name,
+      id: post?._id,
+    };
+    await API.post.postComments(id, params).then((res) => {
+      handleCmtFetch();
+      setCommentsFetched(!commentsFetched);
+    });
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -154,10 +185,27 @@ const PostPageContent = () => {
                   </div>
                 );
               })}
+
+            <div className="input-wrap">
+              <input
+                value={cmtContents}
+                onChange={(e) => setCmtContents(e.target.value)}
+                onClick={!auth.isAuthenticated ? handleAttemptLogin : () => {}}
+                placeholder={`${
+                  auth.isAuthenticated
+                    ? '내용을 입력해주세요'
+                    : '댓글 작성은 로그인 후 가능합니다'
+                }`}
+              />
+              {auth.isAuthenticated && (
+                <button onClick={() => handleCmtPost(post._id)}>
+                  댓글 작성
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
-
       <Footer>
         <div className="right-wrap">
           <p className="likes_cmt">

@@ -56,7 +56,7 @@ const SignUpModal = () => {
   };
 
   return (
-    <Modal>
+    <>
       <div className="input-wrap signup">
         <input
           value={input.name}
@@ -103,7 +103,7 @@ const SignUpModal = () => {
       <button className="login-button" onClick={handleSubmit}>
         등록하기
       </button>
-    </Modal>
+    </>
   );
 };
 

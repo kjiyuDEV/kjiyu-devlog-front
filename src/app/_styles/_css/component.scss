@@ -329,5 +329,32 @@
         font-size: 13px;
       }
     }
+    .input-wrap {
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      input {
+        margin-top: 20px;
+        width: 96%;
+        border: solid 1px rgb(197, 197, 197);
+        height: 50px;
+        padding: 0 2%;
+      }
+      button {
+        margin-top: 20px;
+        width: 100px;
+        height: 40px;
+        border: solid 1px var(--gray);
+        color: white;
+        background: var(--gray);
+        transition: 0.3s;
+        &:hover {
+          background: black;
+          color: white;
+        }
+      }
+    }
   }
 }
