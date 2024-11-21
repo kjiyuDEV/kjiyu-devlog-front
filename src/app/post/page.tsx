@@ -106,8 +106,8 @@ const PostPageContent = () => {
       id: post?._id,
     };
     await API.post.postComments(id, params).then((res) => {
-      handleCmtFetch();
-      setCommentsFetched(!commentsFetched);
+      setPost(res); // const comments 길이
+      handleCmtFetch(); // cmtList 길이
     });
   };
 
