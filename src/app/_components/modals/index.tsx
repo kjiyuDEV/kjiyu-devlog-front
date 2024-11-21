@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ModalState, RootState } from '../../../../type';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LoginModal from './LoginModal';
+import SignUpModal from './SignUpModal';
 
 interface ModalProps {
   children?: React.ReactNode;
@@ -36,7 +38,10 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
         <button className="modal-close" onClick={handleClose}>
           <FontAwesomeIcon icon={faTimes} />
         </button>
-        <div className="modal-body">{children}</div>
+        <div className="modal-body">
+          {modal.data.type === 'login' && <LoginModal />}
+          {modal.data.type === 'signUp' && <SignUpModal />}
+        </div>
       </div>
     </div>
   );

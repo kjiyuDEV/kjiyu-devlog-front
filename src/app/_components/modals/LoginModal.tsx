@@ -24,10 +24,12 @@ const LoginModal = () => {
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
+    setErrmsg('');
   };
 
   const handlePwdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPwd(e.target.value);
+    setErrmsg('');
   };
 
   const handleLogin = () => {
@@ -38,7 +40,6 @@ const LoginModal = () => {
         dispatch({
           type: TYPE.CLOSE_MODAL,
         });
-        await router.push('/list');
         dispatch({
           type: TYPE.LOGIN_SUCCESS,
           payload: res,
@@ -51,8 +52,18 @@ const LoginModal = () => {
       });
   };
 
+  const handleSignupModal = () => {
+    dispatch({
+      type: TYPE.OPEN_MODAL,
+      data: {
+        type: 'signUp',
+        title: '회원가입',
+      },
+    });
+  };
+
   return (
-    <Modal>
+    <>
       <div className="input-wrap">
         <input
           value={id}
@@ -76,10 +87,18 @@ const LoginModal = () => {
         />
       </div>
       {errmsg !== '' && <h5 className="error login-msg">{errmsg}</h5>}
-      <button className="login-button" onClick={handleLogin}>
-        Login
-      </button>
-    </Modal>
+      <div className="login-signup-wrap">
+        <button className="login-button" onClick={handleLogin}>
+          Login
+        </button>
+        <div className="signup-container">
+          <h6>아직 회원이 아니신가요?</h6>
+          <button className="signup-button" onClick={handleSignupModal}>
+            SignUp
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 
