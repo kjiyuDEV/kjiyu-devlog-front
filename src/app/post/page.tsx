@@ -7,19 +7,23 @@ import { useSearchParams } from 'next/navigation';
 import Footer from '../_components/footer/Index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { isDesktop } from 'react-device-detect';
+import { TYPE } from '../_components/types';
 
 const PostPageContent = () => {
-    const { auth } = useSelector((state: RootState) => ({
+    const dispatch = useDispatch();
+    const { auth, modal } = useSelector((state: RootState) => ({
         auth: state.auth,
+        modal: state.modals.modal,
     }));
     const [loading, setLoading] = useState(true);
     const [post, setPost] = useState<PostDetail | null>(null);
     const [cmtLists, setCmtLists] = useState<Comment[]>([]);
     const [cmtOpen, setCmtOpen] = useState(false);
     const [commentsFetched, setCommentsFetched] = useState(false);
+    const [cmtContents, setCmtContents] = useState('');
     const likes = post ? post.likes.length : 0;
     const comments = post ? post.comments.length : 0;
     const myLike = useMemo(() => {
@@ -44,13 +48,19 @@ const PostPageContent = () => {
                 setLoading(false);
             }
         } else {
-            toast('로그인 후 이용해주세요.');
+            handleAttemptLogin();
         }
     };
 
     // 모바일 fnc
-    const handleCmtModal = () => {
-        console.log('handlePostModal');
+    const handleFooterCmt = () => {
+        setCmtOpen(true);
+        handleCmtFetch().then(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth',
+            });
+        });
     };
 
     // 데스크탑 fnc
@@ -62,17 +72,45 @@ const PostPageContent = () => {
     };
 
     const handleCmtFetch = useCallback(async () => {
-        if (commentsFetched) return;
         try {
             const response = post && (await API.post.getPostComments(post._id));
-            setCommentsFetched(true);
+            setCommentsFetched(!commentsFetched);
             if (response) {
-                setCmtLists(response); // 댓글 목록 업데이트
+                setCmtLists(response);
             }
         } catch (error) {
             console.error('Error fetching post:', error);
         }
     }, [post, auth, commentsFetched]);
+
+    const handleAttemptLogin = () => {
+        toast('로그인 후 이용 가능해요');
+        setTimeout(() => {
+            if (!auth.isAuthenticated) {
+                dispatch({
+                    type: TYPE.OPEN_MODAL,
+                    data: {
+                        type: 'login',
+                        title: 'Login',
+                    },
+                });
+            }
+        }, 500);
+    };
+
+    const handleCmtPost = async (id: string) => {
+        const params = {
+            contents: cmtContents,
+            userId: auth.user.id,
+            userName: auth.user.name,
+            id: post?._id,
+        };
+        await API.post.postComments(id, params).then((res) => {
+            setPost(res); // const comments 길이
+            handleCmtFetch(); // cmtList 길이
+            toast('댓글을 작성했어요');
+        });
+    };
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -113,40 +151,52 @@ const PostPageContent = () => {
                     <p className="views">조회수 {post.views}</p>
                 </div>
                 <div className="content" dangerouslySetInnerHTML={{ __html: post.contents }} />
-                {isDesktop && (
-                    <div className="like-cmt-wrap">
-                        <button
-                            className={`likes ${myLike ? 'mylike' : ''}`}
-                            onClick={() => handleLike(post._id)}
-                        >
-                            <FontAwesomeIcon icon={faHeart} />
-                            {likes}
-                        </button>
-                        <button
-                            className={`cmt ${cmtOpen ? 'cmtOpen' : ''}`}
-                            onClick={handleCmtOpen}
-                        >
-                            <FontAwesomeIcon icon={faComment} />
-                            {comments}
-                        </button>
-                    </div>
-                )}
+                <div className="like-cmt-wrap">
+                    <button
+                        className={`likes ${myLike ? 'mylike' : ''}`}
+                        onClick={() => handleLike(post._id)}
+                    >
+                        <FontAwesomeIcon icon={faHeart} />
+                        {likes}
+                    </button>
+                    <button className={`cmt ${cmtOpen ? 'cmtOpen' : ''}`} onClick={handleCmtOpen}>
+                        <FontAwesomeIcon icon={faComment} />
+                        {comments}
+                    </button>
+                </div>
                 {cmtOpen && (
                     <div className="content cmt-wrap">
                         <div className="cmt-header">댓글</div>
-                        {cmtLists.map((v) => {
-                            return (
-                                <div key={v._id} className="cmt-container">
-                                    <p className="creator">{v.creatorName}</p>
-                                    <p className="date">{v.date}</p>
-                                    <p className="contents">{v.contents}</p>
-                                </div>
-                            );
-                        })}
+                        {cmtLists.length === 0 && <div className="no-cmt">댓글이 없습니다.</div>}
+                        {cmtLists.length > 0 &&
+                            cmtLists.map((v) => {
+                                return (
+                                    <div key={v._id} className="cmt-container">
+                                        <p className="creator">{v.creatorName}</p>
+                                        <p className="date">{v.date}</p>
+                                        <p className="contents">{v.contents}</p>
+                                    </div>
+                                );
+                            })}
+
+                        <div className="input-wrap">
+                            <input
+                                value={cmtContents}
+                                onChange={(e) => setCmtContents(e.target.value)}
+                                onClick={!auth.isAuthenticated ? handleAttemptLogin : () => {}}
+                                placeholder={`${
+                                    auth.isAuthenticated
+                                        ? '내용을 입력해주세요'
+                                        : '댓글 작성은 로그인 후 가능합니다'
+                                }`}
+                            />
+                            {auth.isAuthenticated && (
+                                <button onClick={() => handleCmtPost(post._id)}>댓글 작성</button>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
-
             <Footer>
                 <div className="right-wrap">
                     <p className="likes_cmt">
@@ -154,7 +204,7 @@ const PostPageContent = () => {
                             <FontAwesomeIcon icon={faHeart} />
                             {likes}
                         </div>
-                        <div className="cmt onClick={handleCmtModal}">
+                        <div className="cmt" onClick={handleFooterCmt}>
                             <FontAwesomeIcon icon={faComment} />
                             {comments}
                         </div>
