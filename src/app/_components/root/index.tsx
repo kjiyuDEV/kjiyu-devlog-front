@@ -15,9 +15,10 @@ interface RootProps {
 }
 
 const Root: React.FC<RootProps> = ({ children }) => {
-  const { confirmModal, auth } = useSelector((state: RootState) => {
+  const { confirmModal, modal, auth } = useSelector((state: RootState) => {
     return {
       confirmModal: state.modals.confirmModal,
+      modal: state.modals.modal,
       auth: state.auth,
     };
   });
@@ -30,6 +31,7 @@ const Root: React.FC<RootProps> = ({ children }) => {
   return (
     <div>
       {confirmModal.open && <ConfirmModal />}
+      {modal.open && <Modal />}
       {isClient === 'mobile' && <Mobile>{children}</Mobile>}
       {isClient === 'desktop' && <Desktop>{children}</Desktop>}
     </div>
