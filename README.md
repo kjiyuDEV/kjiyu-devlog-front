@@ -1,4 +1,4 @@
-# 개인블로그
+# 개인블로그 https://kjiyudev.github.io/kjiyu-devlog-front/ 
 
 ## 프로젝트 설명
 - https://kjiyulog.com/ (UI Reactjs로 개발)를 마이그레이션 하여 Next.js 및 TS로 작업하였습니다.
