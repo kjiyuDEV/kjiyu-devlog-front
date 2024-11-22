@@ -1,16 +1,19 @@
 'use client';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import LoginModal from './_components/modals/LoginModal';
 import { TYPE } from './_components/types';
 import SignUpModal from './_components/modals/SignUpModal';
+import API from './_apis';
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const visits = JSON.parse(localStorage.getItem('visitInit') || '{}');
+  const [views, setViews] = useState(0);
   const { modal, auth } = useSelector((state: RootState) => {
     return {
       modal: state.modals.modal,
@@ -19,24 +22,13 @@ export default function Home() {
   });
 
   const handleLoginModal = () => {
-    if (auth.isAuthenticated) {
-      dispatch({
-        type: TYPE.OPEN_CONFIRM_MODAL,
-        data: {
-          type: 'logout',
-          content: '로그아웃 하시겠어요?',
-        },
-      });
-    }
-    if (!auth.isAuthenticated) {
-      dispatch({
-        type: TYPE.OPEN_MODAL,
-        data: {
-          type: 'login',
-          title: 'Login',
-        },
-      });
-    }
+    dispatch({
+      type: TYPE.OPEN_MODAL,
+      data: {
+        type: 'login',
+        title: 'Login',
+      },
+    });
   };
 
   const handleSignUpModal = () => {
@@ -51,11 +43,50 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    // todo 숫자 올라갈때 애니메이션 추가해야함
+    const viewUpdate = async (type: string) => {
+      const params = {
+        type: type,
+      };
+      await API.visit.fetchVisits(params).then((res) => {
+        console.log(res.views);
+        setViews(res.views);
+      });
+    };
+
+    if (!visits?.exTime) {
+      const currentDate = new Date();
+      const expirationDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate() + 1,
+        0,
+        0,
+        0
+      ); // 하루 후 만료
+      const item = {
+        exTime: expirationDate,
+      };
+      localStorage.setItem('visitInit', JSON.stringify(item));
+      viewUpdate('up');
+    } else {
+      viewUpdate('');
+    }
+  }, []);
+
   return (
     <div className="main-wrapper">
       <div className="main-wrap">
         <h1>Kjiyu-dev-log</h1>
         <h3>frontend-developer</h3>
+        {views && (
+          <h5>
+            <p className="main-views">
+              <span> {views} visitors</span>
+            </p>
+          </h5>
+        )}
         <Image
           src="https://cdn1.iconfinder.com/data/icons/3d-isometric-color/512/computer-iso-color.png"
           alt="main-illust"
@@ -70,12 +101,14 @@ export default function Home() {
       <div className="sign-wrap">
         <button
           onClick={() => {
-            handleLoginModal();
+            auth.isAuthenticated ? router.push('/list') : handleLoginModal();
           }}
         >
-          {auth.isAuthenticated ? 'Logout' : 'Login'}
+          {auth.isAuthenticated ? 'Go List' : 'Login'}
         </button>
-        <div className="new-container">
+        <div
+          className={`new-container ${auth.isAuthenticated ? 'logout-p' : ''}`}
+        >
           {!auth.isAuthenticated && (
             <>
               <p>New here?</p>
@@ -90,12 +123,20 @@ export default function Home() {
           )}
 
           <p
-            className="just-view"
+            className={`just-view`}
             onClick={() => {
-              router.push('/list');
+              !auth.isAuthenticated
+                ? router.push('/list')
+                : dispatch({
+                    type: TYPE.OPEN_CONFIRM_MODAL,
+                    data: {
+                      type: 'logout',
+                      content: '로그아웃 하시겠어요?',
+                    },
+                  });
             }}
           >
-            {!auth.isAuthenticated ? 'Just View' : 'Go List'}
+            {!auth.isAuthenticated ? 'Just View' : 'Logout'}
           </p>
         </div>
       </div>
