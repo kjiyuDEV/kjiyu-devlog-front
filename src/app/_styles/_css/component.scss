@@ -18,6 +18,9 @@
     align-items: center;
     justify-content: center;
     margin-top: 60px;
+    .main-views {
+      color: var(--gray);
+    }
   }
   .sign-wrap {
     margin-top: 80px;
@@ -54,6 +57,9 @@
     .just-view {
       cursor: pointer;
       text-decoration: underline;
+    }
+    .logout-p {
+      margin-top: 20px;
     }
   }
 }
@@ -99,6 +105,16 @@
   .list-wrap {
     margin-top: 20px;
     padding-bottom: 50px;
+    .no-posts {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      text-align: center;
+      color: var(--gray);
+      font-size: 15px;
+    }
     .list-container {
       position: relative;
       padding: 10px 20px;
@@ -356,5 +372,46 @@
         }
       }
     }
+  }
+}
+
+.counter {
+  display: inline-block; /* 인라인 블록으로 설정하여 애니메이션 효과 적용 */
+}
+
+.counter span {
+  display: inline-block; /* 각 숫자를 인라인 블록으로 설정 */
+  transition: transform 0.5s ease; /* 애니메이션 효과를 위한 트랜지션 설정 */
+}
+
+.counter span.animate {
+  transform: translateY(-20px); /* 위로 올라가는 효과 */
+}
+
+// ---- 로딩 ----
+.skeleton-wrapper {
+  position: relative;
+  padding: 10px 20px;
+  width: 90vw; /* 기존 .list-container의 너비와 일치 */
+  background: white;
+  margin-bottom: 40px; /* 기존 .list-container의 아래 여백과 일치 */
+  border-radius: 10px 10px 0 0; /* 기존 .list-container의 모서리 스타일 */
+  animation: pulse 1.5s infinite; /* 애니메이션 효과 추가 */
+  height: 230px;
+  @media only screen and (max-width: 680px) {
+    width: 80vw !important;
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #d0d0d0;
+  }
+  100% {
+    background-color: #e0e0e0;
   }
 }
