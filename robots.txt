@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kjiyudev.github.io/kjiyu-devlog-front/sitemap.xml
